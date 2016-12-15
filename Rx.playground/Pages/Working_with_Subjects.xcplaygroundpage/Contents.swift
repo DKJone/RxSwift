@@ -1,22 +1,22 @@
 /*:
- > # IMPORTANT: To use **Rx.playground**:
- 1. Open **Rx.xcworkspace**.
- 1. Build the **RxSwift-macOS** scheme (**Product** → **Build**).
- 1. Open **Rx** playground in the **Project navigator**.
- 1. Show the Debug Area (**View** → **Debug Area** → **Show Debug Area**).
+ > # 重要提示：使用Rx.playground：
+ 1.  打开Rx.xcworkspace.
+ 1. 编译 RxSwift-macOS 项目 (Product → Build)
+ 1. 在项目导航栏你打开RX playground
+ 1. 打开调试窗口 (**View** → **Debug Area** → **Show Debug Area**).
  ----
- [Previous](@previous) - [Table of Contents](Table_of_Contents)
+ [上一页](@previous) - [返回目录](Table_of_Contents)
  */
 import RxSwift
 /*:
- # Working with Subjects
- A Subject is a sort of bridge or proxy that is available in some implementations of Rx that acts as both an observer and `Observable`. Because it is an observer, it can subscribe to one or more `Observable`s, and because it is an `Observable`, it can pass through the items it observes by reemitting them, and it can also emit new items. [More info](http://reactivex.io/documentation/subject.html)
+ # 使用Subjects
+ 一个Subject是获取Rx的观测者和可观察属性(`Observable`)的桥梁和代理。因为是观察者，所以它可以订阅一个或者多个可观察对象(`Observable`)。因为是可观察对象(`Observable`)，它可以通过元素观察和重发他们，也可以发送新的元素。[更多信息](http://reactivex.io/documentation/subject.html)
 */
 extension ObservableType {
     
     /**
-     Add observer with `id` and print each emitted event.
-     - parameter id: an identifier for the subscription.
+     为id添加观察者，并打印所有发出的事件
+     - parameter id: 订阅者的id.
      */
     func addObserver(_ id: String) -> Disposable {
         return subscribe { print("Subscription:", id, "Event:", $0) }
@@ -31,7 +31,7 @@ func writeSequenceToConsole<O: ObservableType>(name: String, sequence: O) -> Dis
 }
 /*:
  ## PublishSubject
- Broadcasts new events to all observers as of their time of the subscription.
+ 在订阅后向他的观察者广播事件。
  ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/publishsubject.png "PublishSubject")
  */
 example("PublishSubject") {
@@ -47,10 +47,10 @@ example("PublishSubject") {
     subject.onNext("🅱️")
 }
 /*:
- > This example also introduces using the `onNext(_:)` convenience method, equivalent to `on(.next(_:)`, which causes a new Next event to be emitted to subscribers with the provided `element`. There are also `onError(_:)` and `onCompleted()` convenience methods, equivalent to `on(.error(_:))` and `on(.completed)`, respectively.
+ > 提示：这个示例还是用了`onNext(_:)`简便方法，等价于使用`on(.next(_:))`,让用户使用订阅元素的下一个事件。也有`onError(_:) 和onCompleted()`简便方法分别等价于`on(.error(_:)) 和   on(.completed)`。
  ----
  ## ReplaySubject
- Broadcasts new events to all subscribers, and the specified `bufferSize` number of previous events to new subscribers.
+ 广播新事件给所有订阅者，并指定新事件的之前的缓存大小。
  ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/replaysubject.png)
 */
 example("ReplaySubject") {
@@ -68,7 +68,7 @@ example("ReplaySubject") {
 /*:
  ----
 ## BehaviorSubject
-Broadcasts new events to all subscribers, and the most recent (or initial) value to new subscribers.
+广播新的事件给订阅者，并发送最近的(或者初始值)给行的而订阅者
 ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/behaviorsubject.png)
 */
 example("BehaviorSubject") {
@@ -88,10 +88,10 @@ example("BehaviorSubject") {
     subject.onNext("🍊")
 }
 /*:
- > Notice what's missing in these previous examples? A Completed event. `PublishSubject`, `ReplaySubject`, and `BehaviorSubject` do not automatically emit Completed events when they are about to be disposed of.
+ > 注意这些之前的例子中都遗漏了什么？完成事件！`PublishSubject, ReplaySubject,BehaviorSubject`当他们即将被处理时，不能自动发出完成事件。
  ----
  ## Variable
- Wraps a `BehaviorSubject`, so it will emit the most recent (or initial) value to new subscribers. And `Variable` also maintains current value state. `Variable` will never emit an Error event. However, it will automatically emit a Completed event and terminate on `deinit`.
+ 覆盖`BehaviorSubject`所以它将发送最近(或初始)的值给新的订阅者，并维持最近值得状态。`Variable`将不会发送错误事件，然而他会在销毁前发送完成事件和结束。
 */
 example("Variable") {
     let disposeBag = DisposeBag()
@@ -105,6 +105,6 @@ example("Variable") {
     variable.value = "🅰️"
     variable.value = "🅱️"
 }
-//:  > Call `asObservable()` on a `Variable` instance in order to access its underlying `BehaviorSubject` sequence. `Variable`s do not implement the `on` operator (or, e.g., `onNext(_:)`), but instead expose a `value` property that can be used to get the current value, and also set a new value. Setting a new value will also add that value onto its underlying `BehaviorSubject` sequence.
+//:  > 一个`Variable`实例使用`asObservable`方法，访问它的原始队列，`Variables`没有实现`on`操作符(如`onNext(_:)`),但是作为替代，提供了一个`value`属性可以用作获取最近的值，也可以设置一个新的值，设置新值也会添加这个值到原始的`BehaviorSubject`队列。
 
-//: [Next](@next) - [Table of Contents](Table_of_Contents)
+//: [下一章](@next) - [返回目录](Table_of_Contents)

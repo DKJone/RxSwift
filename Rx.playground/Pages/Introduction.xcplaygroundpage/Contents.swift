@@ -1,58 +1,58 @@
 /*:
- > # IMPORTANT: To use **Rx.playground**:
- 1. Open **Rx.xcworkspace**.
- 1. Build the **RxSwift-macOS** scheme (**Product** → **Build**).
- 1. Open **Rx** playground in the **Project navigator**.
- 1. Show the Debug Area (**View** → **Debug Area** → **Show Debug Area**).
+ > # 重要提示：使用Rx.playground：
+ 1.  打开Rx.xcworkspace.
+ 1. 编译 RxSwift-macOS 项目 (Product → Build)
+ 1. 在项目导航栏你打开RX playground
+ 1. 打开调试窗口 (**View** → **Debug Area** → **Show Debug Area**).
  ----
- [Previous](@previous)
+ [上一页](@previous)
  */
 
 import RxSwift
 
 /*:
-# Introduction
+# 序章 介绍
 
-## Why use RxSwift?
+## 为什么我们要使用RxSwift？
 
-A vast majority of the code we write involves responding to external events. When a user manipulates a control, we need to write an `@IBAction` handler to respond. We need to observe notifications to detect when the keyboard changes position. We must provide closures to execute when URL sessions respond with data. And we use KVO to detect changes to variables.
-All of these various systems makes our code needlessly complex. Wouldn't it be better if there was one consistent system that handled all of our call/response code? Rx is such a system.
  
- RxSwift is the official implementation of [Reactive Extensions](http://reactivex.io) (aka Rx), which exist for [most major languages and platforms](http://reactivex.io/languages.html).
+ 我们写的绝大多数代码都包含了界面元素的事件响应。当用户操作控件时，我们需要写一个@IBAction的处理句柄去响应用户事件。我们需要订阅通知去观测何时键盘位置发生改变。当URL sessions返回一个数据时我们需要提供一个可执行的闭包。我们利用KVO去观测变量的变化。这些各种各样的机制促使我们的代码产生了不必要的复杂。有什么能比只使用一种机制去处理所有请求或响应更好的呢？Rx就是这样一种机制。
+ 
+ RxSwift 是官方的[Reactive Extensions](http://reactivex.io) (也称作 Rx),  （一款同时支持[多种语言平台](http://reactivex.io/languages.html).）的实现
 */
 /*:
- ## Concepts
+ ## 概念
  
- **Every `Observable` instance is just a sequence.**
+ **任何一个Observable的实例都是一个队列**
  
- The key advantage for an `Observable` sequence vs. Swift's `SequenceType` is that it can also receive elements asynchronously. _This is the essence of RxSwift._ Everything else expands upon this concept.
-
- * An `Observable` (`ObservableType`) is equivalent to a `SequenceType`.
- * The `ObservableType.subscribe(_:)` method is equivalent to `SequenceType.generate()`.
- * `ObservableType.subscribe(_:)` takes an observer (`ObserverType`) parameter, which will be subscribed to automatically receive sequence events and elements emitted by the `Observable`, instead of manually calling `next()` on the returned generator.
+ 一个Observable队列和Swift的SequenceType相比它的核心优势就在于它依然可以接收异步元素，这是RxSwift的核心所在。其他的所有都是建立在这基础之上的。
+ * 一个Observable (`ObservableType`)等价于一个 `SequenceType`
+ * `ObservableType.subscribe(_:)`方法等价于`SequenceType.generate()`
+ * `ObservableType.subscribe(_:)`需要一个观察者(`ObserverType`)作为参数，他将自动订阅由Observable发出的事件队列，而不是手动的用`Next()`方法订阅回调。
  */
 /*:
- If an `Observable` emits a next event (`Event.next(Element)`), it can continue to emit more events. However, if the `Observable` emits either an error event (`Event.error(ErrorType)`) or a completed event (`Event.completed`), the `Observable` sequence cannot emit additional events to the subscriber.
-
- Sequence grammar explains this more concisely:
+ 如果 一个`Observable`发出一个`next`事件(`Event.next(Element)`),它人可以继续发出更多的事件。但是如果它发出了一个错误事件(`Event.error(ErrorType)`)或者一个完成事件(`Event.completed`)，他讲不再能够发送更多的事件给订阅者。
+ 
+ 这样介绍上面的概念更简洁:
 
  `next* (error | completed)?`
 
- And this can also be explained more visually using diagrams:
+ 用图表可以更形象的解释
 
- `--1--2--3--4--5--6--|----> // "|" = Terminates normally`
+ `--1--2--3--4--5--6--|----> // "|" = 正常停止`
 
- `--a--b--c--d--e--f--X----> // "X" = Terminates with an error`
+ `--a--b--c--d--e--f--X----> // "X" = 错误时停止`
 
- `--tap--tap----------tap--> // "|" = Continues indefinitely, such as a sequence of button taps`
+ `--tap--tap----------tap--> // "|" = 永远不停止，例如按钮的点击事件队列`
 
- > These diagrams are called marble diagrams. You can learn more about them at [RxMarbles.com](http://rxmarbles.com).
+ > 这些图表称作大理石图. 你可以在[RxMarbles.com](http://rxmarbles.com).学到更多
 */
 /*:
- ### Observables and observers (aka subscribers)
+ ### Observables and observers (也称作 subscribers)
  
- `Observable`s will not execute their subscription closure unless there is a subscriber. In the following example, the closure of the `Observable` will never be executed, because there are no subscribers:
+ 可订阅对象(Observables)在有订阅者之前不会执行他们的订阅闭包。例如下面这个例子，他的闭包永远不会执行因为他没有一个订阅者
  */
+
 example("Observable with no subscribers") {
     _ = Observable<String>.create { observerOfString -> Disposable in
         print("This will never be printed")
@@ -63,7 +63,7 @@ example("Observable with no subscribers") {
 }
 /*:
  ----
- In the following example, the closure will be executed when `subscribe(_:)` is called:
+ 在下面这个例子中，闭包会在被订阅(`subscribe(_:)`)时执行
  */
 example("Observable with subscriber") {
   _ = Observable<String>.create { observerOfString in
@@ -77,9 +77,10 @@ example("Observable with subscriber") {
     }
 }
 /*:
- > Don't concern yourself with the details of how these `Observable`s were created in these examples. We'll get into that [next](@next).
+ > 不要关心`Observables`是怎么创建的，我们将在[下一章](@next)介绍.
  #
- > `subscribe(_:)` returns a `Disposable` instance that represents a disposable resource such as a subscription. It was ignored in the previous simple example, but it should normally be properly handled. This usually means adding it to a `DisposeBag` instance. All examples going forward will include proper handling, because, well, practice makes _permanent_ 🙂. You can learn more about this in the [Disposing section](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md#disposing) of the [Getting Started guide](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md).
+ > `subscribe(_:)`返回一个`Disposable`实例代表一次性资源比如一个订阅。他在之前的简单例子中被忽略了，但是它常常正确的处理了。这意味着将它放入内容一个` DisposeBag`实例中。在此后的例子中我们将包含适当的处理，因为实践出真知！
+ 🙂. 你可以在这里获取更多[Disposing section](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md#disposing) -  [入门指南](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md).
  */
 
-//: [Next](@next) - [Table of Contents](Table_of_Contents)
+//: [下一章](@next) - [返回目录](Table_of_Contents)

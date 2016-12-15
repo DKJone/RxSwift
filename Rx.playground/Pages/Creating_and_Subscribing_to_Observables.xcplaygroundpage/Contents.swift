@@ -1,18 +1,18 @@
 /*:
- > # IMPORTANT: To use **Rx.playground**:
- 1. Open **Rx.xcworkspace**.
- 1. Build the **RxSwift-macOS** scheme (**Product** → **Build**).
- 1. Open **Rx** playground in the **Project navigator**.
- 1. Show the Debug Area (**View** → **Debug Area** → **Show Debug Area**).
+ > # 重要提示：使用Rx.playground：
+ 1.  打开Rx.xcworkspace.
+ 1. 编译 RxSwift-macOS 项目 (Product → Build)
+ 1. 在项目导航栏你打开RX playground
+ 1. 打开调试窗口 (**View** → **Debug Area** → **Show Debug Area**).
  ----
- [Previous](@previous) - [Table of Contents](Table_of_Contents)
+ [上一页](@previous)
  */
 import RxSwift
 /*:
- # Creating and Subscribing to `Observable`s
- There are several ways to create and subscribe to `Observable` sequences.
+ # 第一章 创建并使用Observables
+ 有下面几种创建和订阅` Observable`队列的方式
  ## never
- Creates a sequence that never terminates and never emits any events. [More info](http://reactivex.io/documentation/operators/empty-never-throw.html)
+ 创建一个不会停止也不会发送任何元素的`Observable`队列. [更多信息](http://reactivex.io/documentation/operators/empty-never-throw.html)
  */
 example("never") {
     let disposeBag = DisposeBag()
@@ -28,7 +28,7 @@ example("never") {
 /*:
  ----
  ## empty
- Creates an empty `Observable` sequence that only emits a Completed event. [More info](http://reactivex.io/documentation/operators/empty-never-throw.html)
+ 创建一个只会发送一个完成事件的`Observable`队列.。[更多信息](http://reactivex.io/documentation/operators/empty-never-throw.html)
  */
 example("empty") {
     let disposeBag = DisposeBag()
@@ -40,10 +40,10 @@ example("empty") {
         .addDisposableTo(disposeBag)
 }
 /*:
- > This example also introduces chaining together creating and subscribing to an `Observable` sequence.
+ > 这个例子也包括创建和订阅一个`Observable`队列.
  ----
  ## just
- Creates an `Observable` sequence with a single element. [More info](http://reactivex.io/documentation/operators/just.html)
+ 创建一个只有单一信号元素的`OBservable`队列。[更多信息](http://reactivex.io/documentation/operators/just.html)
  */
 example("just") {
     let disposeBag = DisposeBag()
@@ -57,7 +57,7 @@ example("just") {
 /*:
  ----
  ## of
- Creates an `Observable` sequence with a fixed number of elements.
+ 创建一个带有固定元素个数的`Observable`队列
  */
 example("of") {
     let disposeBag = DisposeBag()
@@ -69,7 +69,8 @@ example("of") {
         .addDisposableTo(disposeBag)
 }
 /*:
- > This example also introduces using the `subscribe(onNext:)` convenience method. Unlike `subscribe(_:)`, which subscribes an _event_ handler for all event types (Next, Error, and Completed), `subscribe(onNext:)` subscribes an _element_ handler that will ignore Error and Completed events and only produce Next event elements. There are also `subscribe(onError:)` and `subscribe(onCompleted:)` convenience methods, should you only want to subscribe to those event types. And there is a `subscribe(onNext:onError:onCompleted:onDisposed:)` method, which allows you to react to one or more event types and when the subscription is terminated for any reason, or disposed, in a single call:
+ > 这个例子也包括了使用`subscribe(onNext:)`简便方法，和`subscribe(_:)`订阅所有时间句柄不同(next,error,completeed),`subscribes(onNext:)`订阅一个元素的除了完成和错误(Error、Completed)的其他事件而且只产生下一个事件元素，当然还有  `subscribe(onCompleted:)` 和 subscribe(onError:)`  只订阅而对应的事件.也有一个`subscribe(onNext:onError:onCompleted:onDisposed:)`方法，可以允许你响应一个或者多个类型的事件，包括由于某种原因使这个订阅终止和正常处理。
+ 例如:
  ```
  someObservable.subscribe(
      onNext: { print("Element:", $0) },
@@ -80,7 +81,7 @@ example("of") {
 ```
  ----
  ## from
- Creates an `Observable` sequence from a `SequenceType`, such as an `Array`, `Dictionary`, or `Set`.
+ 由一个`SequenceType`创建一个`Observable`队列，例如`Array, Dictionary, Set`
  */
 example("from") {
     let disposeBag = DisposeBag()
@@ -90,10 +91,10 @@ example("from") {
         .addDisposableTo(disposeBag)
 }
 /*:
- > This example also demonstrates using the default argument name `$0` instead of explicitly naming the argument.
+ > 这个示例也示范了使用默认的声明`$0`去替代明确的声明。
 ----
  ## create
- Creates a custom `Observable` sequence. [More info](http://reactivex.io/documentation/operators/create.html)
+ 创建一个自定义的`Observable`队列. [更多信息](http://reactivex.io/documentation/operators/create.html)
 */
 example("create") {
     let disposeBag = DisposeBag()
@@ -113,7 +114,7 @@ example("create") {
 /*:
  ----
  ## range
- Creates an `Observable` sequence that emits a range of sequential integers and then terminates. [More info](http://reactivex.io/documentation/operators/range.html)
+  创建一段连续区间的整数的`Observable`队列，发送完成后终止队列. [更多信息](http://reactivex.io/documentation/operators/range.html)
  */
 example("range") {
     let disposeBag = DisposeBag()
@@ -125,7 +126,7 @@ example("range") {
 /*:
  ----
  ## repeatElement
- Creates an `Observable` sequence that emits the given element indefinitely. [More info](http://reactivex.io/documentation/operators/repeat.html)
+ 创建一个无线发送元素的`Observable`队列。 [获取更多](http://reactivex.io/documentation/operators/repeat.html)
  */
 example("repeatElement") {
     let disposeBag = DisposeBag()
@@ -136,10 +137,10 @@ example("repeatElement") {
         .addDisposableTo(disposeBag)
 }
 /*:
- > This example also introduces using the `take` operator to return a specified number of elements from the start of a sequence.
+ > 这个示例还展示了使用`take`操作符去返回一个指定数量元素的队列。
  ----
  ## generate
- Creates an `Observable` sequence that generates values for as long as the provided condition evaluates to `true`.
+ 创建一个只要提供的条件成立就持续生成值的队列
  */
 example("generate") {
     let disposeBag = DisposeBag()
@@ -155,7 +156,7 @@ example("generate") {
 /*:
  ----
  ## deferred
- Creates a new `Observable` sequence for each subscriber. [More info](http://reactivex.io/documentation/operators/defer.html)
+ 为所有订阅者创建一个新的`Observable`队列. [更多信息](http://reactivex.io/documentation/operators/defer.html)
  */
 example("deferred") {
     let disposeBag = DisposeBag()
@@ -185,7 +186,7 @@ example("deferred") {
 /*:
  ----
  ## error
- Creates an `Observable` sequence that emits no items and immediately terminates with an error.
+ 创建一个不发送任何元素并且立即停止的错误`Observable`队列
  */
 example("error") {
     let disposeBag = DisposeBag()
@@ -197,7 +198,7 @@ example("error") {
 /*:
  ----
  ## doOn
- Invokes a side-effect action for each emitted event and returns (passes through) the original event. [More info](http://reactivex.io/documentation/operators/do.html)
+为所有发出和接受的事件添加一个附加的操作 [更多信息](http://reactivex.io/documentation/operators/do.html)
  */
 example("doOn") {
     let disposeBag = DisposeBag()
@@ -207,6 +208,6 @@ example("doOn") {
         .subscribe(onNext: { print($0) })
         .addDisposableTo(disposeBag)
 }
-//: > There are also `doOnNext(_:)`, `doOnError(_:)`, and `doOnCompleted(_:)` convenience methods to intercept those specific events, and `doOn(onNext:onError:onCompleted:)` to intercept one or more events in a single call.
+//: > 当然也会有`doOnNext(_:), doOnError(_:), doOnCompleted(_:)`这些方法去拦截特定的事件，`doOn(onNext:onError:onCompleted:)`拦截一个或多个的事件信号。
 
-//: [Next](@next) - [Table of Contents](Table_of_Contents)
+//: [下一章](@next) - [返回目录](Table_of_Contents)

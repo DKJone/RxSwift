@@ -1,18 +1,18 @@
 /*:
- > # IMPORTANT: To use **Rx.playground**:
- 1. Open **Rx.xcworkspace**.
- 1. Build the **RxSwift-macOS** scheme (**Product** → **Build**).
- 1. Open **Rx** playground in the **Project navigator**.
- 1. Show the Debug Area (**View** → **Debug Area** → **Show Debug Area**).
+ > # 重要提示：使用Rx.playground：
+ 1.  打开Rx.xcworkspace.
+ 1. 编译 RxSwift-macOS 项目 (Product → Build)
+ 1. 在项目导航栏你打开RX playground
+ 1. 打开调试窗口 (**View** → **Debug Area** → **Show Debug Area**).
  ----
- [Previous](@previous) - [Table of Contents](Table_of_Contents)
+ [上一页](@previous) - [返回目录](Table_of_Contents)
  */
 import RxSwift
 /*:
-# Combination Operators
-Operators that combine multiple source `Observable`s into a single `Observable`.
+# 第三章 组合
+操作符可以绑定多个`Observable`为一个`Observable`信号。
 ## `startWith`
-Emits the specified sequence of elements before beginning to emit the elements from the source `Observable`. [More info](http://reactivex.io/documentation/operators/startwith.html)
+发送指定元素的在队列发出之前(在队列最前方插入)。 [更多信息](http://reactivex.io/documentation/operators/startwith.html)
 ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/startwith.png)
 */
 example("startWith") {
@@ -26,10 +26,10 @@ example("startWith") {
         .addDisposableTo(disposeBag)
 }
 /*:
- > As this example demonstrates, `startWith` can be chained on a last-in-first-out basis, i.e., each successive `startWith`'s elements will be prepended before the prior `startWith`'s elements.
+ > 如例所示如，`startWidth`可以连接成一个后进先出队列，所有继承`StartWidth`的元素都被添加到之前`StartWidth`元素之前。
  ----
  ## `merge`
- Combines elements from source `Observable` sequences into a single new `Observable` sequence, and will emit each element as it is emitted by each source `Observable` sequence. [More info](http://reactivex.io/documentation/operators/merge.html)
+从源头合并多个`Observable`元素为一个信号队列，并且发送原`Observable`队列的事件。 [更多信息](http://reactivex.io/documentation/operators/merge.html)
  ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/merge.png)
  */
 example("merge") {
@@ -58,7 +58,7 @@ example("merge") {
 /*:
  ----
  ## `zip`
- Combines up to 8 source `Observable` sequences into a single new `Observable` sequence, and will emit from the combined `Observable` sequence the elements from each of the source `Observable` sequences at the corresponding index. [More info](http://reactivex.io/documentation/operators/zip.html)
+ 绑定最多达8个`Observable`队列源为一个信号源，并发送按原始队列对应序号绑定后的元素，直到每个原始队列在该序号上都有元素。 [更多信息](http://reactivex.io/documentation/operators/zip.html)
  ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/zip.png)
  */
 example("zip") {
@@ -86,7 +86,8 @@ example("zip") {
 /*:
  ----
  ## `combineLatest`
- Combines up to 8 source `Observable` sequences into a single new `Observable` sequence, and will begin emitting from the combined `Observable` sequence the latest elements of each source `Observable` sequence once all source sequences have emitted at least one element, and also when any of the source `Observable` sequences emits a new element. [More info](http://reactivex.io/documentation/operators/combinelatest.html)
+ 绑定最多达8个`Observable`队列为一个新的信号队列，并绑定每个原始队列的最新的一个元素在一起为一个信号，在每个原始队列添加元素师都会发送一个新的绑定元素。
+[更多信息](http://reactivex.io/documentation/operators/combinelatest.html)
  ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/combinelatest.png)
  */
 example("combineLatest") {
@@ -125,10 +126,10 @@ example("Array.combineLatest") {
         .addDisposableTo(disposeBag)
 }
 /*:
- > The `combineLatest` extension on `Array` requires that all source `Observable` sequences are of the same type.
+ > 基于数组的扩展要求原队列元素类型相同。元素按原队列序号依次添加111222333....
  ----
  ## `switchLatest`
- Transforms the elements emitted by an `Observable` sequence into `Observable` sequences, and emits elements from the most recent inner `Observable` sequence. [More info](http://reactivex.io/documentation/operators/switch.html)
+ 转换`Observable`队列发送的元素，并发送内部队列里最近的值。 [更多信息](http://reactivex.io/documentation/operators/switch.html)
  ![](https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/MarbleDiagrams/png/switch.png)
  */
 example("switchLatest") {
@@ -154,7 +155,7 @@ example("switchLatest") {
     subject2.onNext("🍐")
 }
 /*:
- > In this example, adding ⚾️ onto `subject1` after setting `variable.value` to `subject2` has no effect, because only the most recent inner `Observable` sequence (`subject2`) will emit elements.
+ > 在这个例子中，在设置`variable.value=subject2`后添加⚾️到`subject1`不会产生任何影响，因为只有最近的内部`Observable`队列`subject2`才会发送元素。
  */
 
-//: [Next](@next) - [Table of Contents](Table_of_Contents)
+//: [下一章](@next) - [返回目录](Table_of_Contents)
